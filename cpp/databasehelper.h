@@ -21,6 +21,7 @@ public:
 							 const QString &where, const QString &variable);
 
 	const QHash<FIELDS, QString> &getFieldStrings() const;
+	QStringList getColumnItems(const QString &tableName);
 
 private:
 	void createMediasDB();
@@ -31,6 +32,7 @@ private:
 	QSqlDatabase db;
 	QString dbName;
 	QHash<FIELDS, QString> fieldStrings;
+	QStringList colItems;
 };
 
 #endif // DATABASEHELPER_H

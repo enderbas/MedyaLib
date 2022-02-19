@@ -141,3 +141,17 @@ const QHash<DatabaseHelper::FIELDS, QString> &DatabaseHelper::getFieldStrings() 
 {
 	return fieldStrings;
 }
+
+QStringList DatabaseHelper::getColumnItems(const QString &tableName)
+{
+	if (colItems.size())
+		colItems.clear();
+	QSqlQuery query;
+	QString q = "SELECT %1 FROM %2";
+	q = q.arg(createColumnNameFromTableName(tableName), tableName);
+	query.exec(q);
+	while (query.next()) {
+		colItems.push_back(query.value(0).toString());
+	}
+	return colItems;
+}

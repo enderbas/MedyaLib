@@ -33,5 +33,7 @@ private:
 	DatabaseHelper *dbHelper = nullptr;
 private:
 	void init();
+	void setCompleters();
+	void addCompleter(QLineEdit *le, const QString &colName);
 };
 #endif // MEDYALIB_H
