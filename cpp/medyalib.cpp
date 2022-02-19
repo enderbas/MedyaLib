@@ -4,7 +4,6 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QImageReader>
-
 MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 {
 	ui->setupUi(this);
@@ -99,11 +98,14 @@ void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
 void MedyaLib::on_toolSaveInfos_clicked()
 {
 	auto strMap = dbHelper->getFieldStrings();
-	ui->lineEditLocat->text();
-	ui->lineEditTags->text();
-	dbHelper->addData(strMap.find(DatabaseHelper::PERSONS).value(), ui->lineEditWho->text());
-	dbHelper->addData(strMap.find(DatabaseHelper::DATES).value(), ui->lineEditTimes->text());
-	dbHelper->addData(strMap.find(DatabaseHelper::TAGS).value(), ui->lineEditTags->text());
-	dbHelper->addData(strMap.find(DatabaseHelper::LOCATIONS).value(), ui->lineEditLocat->text());
-	dbHelper->addData(strMap.find(DatabaseHelper::PATHS).value(), currentMediaInformation.first);
+	dbHelper->addData(strMap.find(DatabaseHelper::PERSONS).value(),
+					  ui->lineEditWho->text());
+	dbHelper->addData(strMap.find(DatabaseHelper::DATES).value(),
+					  ui->lineEditTimes->text());
+	dbHelper->addData(strMap.find(DatabaseHelper::TAGS).value(),
+					  ui->lineEditTags->text());
+	dbHelper->addData(strMap.find(DatabaseHelper::LOCATIONS).value(),
+					  ui->lineEditLocat->text());
+	dbHelper->addData(strMap.find(DatabaseHelper::PATHS).value(),
+					  currentMediaInformation.first);
 }

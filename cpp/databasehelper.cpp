@@ -60,9 +60,6 @@ void DatabaseHelper::createDb(const QString &name)
 		query.exec(multiDBTtext);
 		printQueryError(query);
 	}
-//	addData(fieldStrings.find(FIELDS::PERSONS).value(), "Engin");
-//	addData(fieldStrings.find(FIELDS::PERSONS).value(), "Deniz");
-//	addData(fieldStrings.find(FIELDS::PERSONS).value(), "Sinem");
 	isExist(fieldStrings.find(FIELDS::PERSONS).value(), "Deniz");
 }
 
@@ -137,7 +134,8 @@ QString DatabaseHelper::createColumnNameFromTableName(const QString &tablename)
 	return tn.remove(tn.length() - 1, 1);
 }
 
-const QHash<DatabaseHelper::FIELDS, QString> &DatabaseHelper::getFieldStrings() const
+const QHash<DatabaseHelper::FIELDS, QString> &
+DatabaseHelper::getFieldStrings() const
 {
 	return fieldStrings;
 }
