@@ -62,10 +62,9 @@ void DatabaseHelper::createDb(const QString &name)
 		query.exec(multiDBTtext);
 		printQueryError(query);
 	}
-	isExist(fieldStrings.find(FIELDS::PERSONS).value(), "Deniz");
 }
 
-void DatabaseHelper::addData(const QString &table, const QString &input)
+QString DatabaseHelper::addData(const QString &table, const QString &input)
 {
 	QString columnName = createColumnNameFromTableName(table);
 	QString rawQuery("INSERT INTO %1 (%2) VALUES (:%2)");
