@@ -32,6 +32,8 @@ void DatabaseHelper::createDb(const QString &name)
 
 	QSqlQuery query;
 	for (const auto &field : qAsConst(fieldStrings)) {
+		if (db.tables().contains(field))
+			continue;
 		// create single databases
 		QString col = field;
 		col.remove(col.size() - 1, 1);
@@ -74,6 +76,38 @@ void DatabaseHelper::addData(const QString &table, const QString &input)
 	query.bindValue(bindField, input);
 	query.exec();
 	printQueryError(query);
+	return getDataFromTable("id", table, columnName, input);
+}
+
+QString DatabaseHelper::addMediaData(const QString &name,
+									 const QString &extension)
+{
+	QString queryText =
+		"INSERT INTO medias (name, extension) VALUES(:name, :extension)";
+	QSqlQuery query;
+	query.prepare(queryText);
+	query.bindValue(":name", name);
+	query.bindValue(":extension", extension);
+	query.exec();
+	printQueryError(query);
+	return getDataFromTable("id", "medias", "name", name);
+}
+
+QString DatabaseHelper::addMediaCombinedData(const QString &tableName,
+											 const QString &combined_id,
+											 const QString &mediaId)
+{
+	QString combColName = tableName.split("_").at(1) + "_id";
+	QString queryText = "INSERT INTO %1 (media_id, %2) VALUES(:media_id, :%2)";
+	queryText = queryText.arg(tableName, combColName);
+	qDebug() << queryText;
+	QSqlQuery query;
+	query.prepare(queryText);
+	query.bindValue(":media_id", mediaId);
+	query.bindValue(":" + combColName, combined_id);
+	query.exec();
+	printQueryError(query);
+	return getDataFromTable("id", tableName, combColName, combined_id);
 }
 
 bool DatabaseHelper::isExist(const QString &tableName, const QString &input)
@@ -116,6 +150,8 @@ QString DatabaseHelper::getDataFromTable(const QString &select,
 
 void DatabaseHelper::createMediasDB()
 {
+	if (db.tables().contains("medias"))
+		return;
 	QSqlQuery query;
 	query.exec(
 		"CREATE TABLE medias (id INTEGER NOT NULL UNIQUE, name TEXT NOT "

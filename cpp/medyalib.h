@@ -19,6 +19,11 @@ class MedyaLib : public QMainWindow
 public:
 	MedyaLib(QWidget *parent = nullptr);
 	~MedyaLib();
+	struct MediaInfo {
+		QString path;
+		QString name;
+		QString ext;
+	} currentMediaInformation;
 
 private slots:
 	void on_actionNew_Media_triggered();
@@ -29,8 +34,8 @@ private slots:
 private:
 	Ui::MedyaLib *ui;
 	QString currentWorkPath;
-	QPair<QString, QString> currentMediaInformation;
 	DatabaseHelper *dbHelper = nullptr;
+
 private:
 	void init();
 	void setCompleters();

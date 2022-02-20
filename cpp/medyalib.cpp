@@ -61,8 +61,9 @@ void MedyaLib::draw(QListWidgetItem *item)
 	if (newImage.isNull()) {
 		return;
 	}
-	currentMediaInformation.first = currentWorkPath;
-	currentMediaInformation.second = item->text();
+	currentMediaInformation.path = currentWorkPath;
+	currentMediaInformation.name = item->text();
+	currentMediaInformation.ext = "jpg";
 	ui->labelImage->clear();
 	ui->labelImage->setPixmap(QPixmap::fromImage(newImage));
 }
@@ -91,21 +92,44 @@ void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
 	QCompleter *completer =
 		new QCompleter(dbHelper->getColumnItems(colName), this);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
-	completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
+	completer->setCompletionMode(QCompleter::PopupCompletion);
 	le->setCompleter(completer);
 }
 
 void MedyaLib::on_toolSaveInfos_clicked()
 {
 	auto strMap = dbHelper->getFieldStrings();
-	dbHelper->addData(strMap.find(DatabaseHelper::PERSONS).value(),
-					  ui->lineEditWho->text());
-	dbHelper->addData(strMap.find(DatabaseHelper::DATES).value(),
-					  ui->lineEditTimes->text());
-	dbHelper->addData(strMap.find(DatabaseHelper::TAGS).value(),
-					  ui->lineEditTags->text());
-	dbHelper->addData(strMap.find(DatabaseHelper::LOCATIONS).value(),
-					  ui->lineEditLocat->text());
-	dbHelper->addData(strMap.find(DatabaseHelper::PATHS).value(),
-					  currentMediaInformation.first);
+
+	QString mediaId;
+	if (currentMediaInformation.name.size())
+		mediaId = dbHelper->addMediaData(currentMediaInformation.name,
+										 currentMediaInformation.ext);
+	QString id = "";
+	if (ui->lineEditWho->text().size()) {
+		id = dbHelper->addData(strMap.find(DatabaseHelper::PERSONS).value(),
+							   ui->lineEditWho->text());
+		dbHelper->addMediaCombinedData("media_persons", id, mediaId);
+	}
+	if (ui->lineEditTimes->text().size()) {
+		id = dbHelper->addData(strMap.find(DatabaseHelper::DATES).value(),
+							   ui->lineEditTimes->text());
+		dbHelper->addMediaCombinedData("media_dates", id, mediaId);
+	}
+	if (ui->lineEditTags->text().size()) {
+		id = dbHelper->addData(strMap.find(DatabaseHelper::TAGS).value(),
+							   ui->lineEditTags->text());
+		dbHelper->addMediaCombinedData("media_tags", id, mediaId);
+	}
+	if (ui->lineEditLocat->text().size()) {
+		id = dbHelper->addData(strMap.find(DatabaseHelper::LOCATIONS).value(),
+							   ui->lineEditLocat->text());
+		dbHelper->addMediaCombinedData("media_locations", id, mediaId);
+		addCompleter(ui->lineEditLocat,
+					 strMap.find(DatabaseHelper::LOCATIONS).value());
+	}
+	if (currentMediaInformation.path.size()) {
+		id = dbHelper->addData(strMap.find(DatabaseHelper::PATHS).value(),
+							   currentMediaInformation.path);
+		dbHelper->addMediaCombinedData("media_paths", id, mediaId);
+	}
 }

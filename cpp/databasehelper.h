@@ -13,9 +13,18 @@ class DatabaseHelper : public QObject
 public:
 	enum FIELDS { PATHS, LOCATIONS, PERSONS, TAGS, DATES };
 
+	struct queryStruct {
+		QString columnName;
+		QString data;
+	};
+
 	DatabaseHelper(const QString &databaseName, QObject *parent = nullptr);
 	void createDb(const QString &name);
-	void addData(const QString &table, const QString &input);
+	QString addData(const QString &table, const QString &input);
+	QString addMediaData(const QString &name, const QString &extension);
+	QString addMediaCombinedData(const QString &tableName,
+								 const QString &combined_id,
+								 const QString &mediaId);
 	bool isExist(const QString &db, const QString &input);
 	QString getDataFromTable(const QString &select, const QString &from,
 							 const QString &where, const QString &variable);
