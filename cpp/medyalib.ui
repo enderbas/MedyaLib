@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QVBoxLayout" name="verticalLayout" stretch="1,10">
@@ -72,8 +72,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>1154</width>
+             <height>498</height>
             </rect>
            </property>
           </widget>
@@ -82,39 +82,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pageNewInput">
-       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="20,0,1">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetDefaultConstraint</enum>
-        </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
         <item>
-         <layout class="QGridLayout" name="layoutNewTags" rowstretch="0" columnstretch="1,0,0,1">
-          <item row="0" column="1" colspan="2">
-           <layout class="QVBoxLayout" name="layoutSelectedImage"/>
-          </item>
-          <item row="0" column="0">
-           <widget class="QListWidget" name="thumbnailNewImages"/>
-          </item>
-          <item row="0" column="3">
-           <widget class="QLabel" name="labelImage">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
+         <layout class="QGridLayout" name="layoutSplitter"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="layoutNewFilters">
@@ -179,7 +149,7 @@
      <x>0</x>
      <y>0</y>
      <width>1192</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="contextMenuPolicy">

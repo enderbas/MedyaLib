@@ -1,10 +1,10 @@
 #ifndef MEDYALIB_H
 #define MEDYALIB_H
 
-#include <QMainWindow>
-#include <QListWidgetItem>
 #include "databasehelper.h"
-
+#include <QListWidgetItem>
+#include <QMainWindow>
+#include <presentationwidget.h>
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
@@ -28,16 +28,15 @@ public:
 private slots:
 	void on_actionNew_Media_triggered();
 	void on_actionGallery_triggered();
-	void draw(QListWidgetItem *item);
 	void on_toolSaveInfos_clicked();
 
 private:
 	Ui::MedyaLib *ui;
 	QString currentWorkPath;
 	DatabaseHelper *dbHelper = nullptr;
+	PresentationWidget *presentation = nullptr;
 
 private:
-	void init();
 	void setCompleters();
 	void addCompleter(QLineEdit *le, const QString &colName);
 };
