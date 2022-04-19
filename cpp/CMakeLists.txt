@@ -22,6 +22,9 @@ set(PROJECT_SOURCES
         medyalib.ui
         databasehelper.cpp
         databasehelper.h
+        presentationwidget.cpp
+        presentationwidget.h
+        presentationwidget.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
