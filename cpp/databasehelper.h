@@ -18,8 +18,8 @@ public:
 		QString data;
 	};
 
-	DatabaseHelper(const QString &databaseName, QObject *parent = nullptr);
-	void createDb(const QString &name);
+	DatabaseHelper(const QString &databasePath, const QString &databaseName, QObject *parent = nullptr);
+	void createDb();
 	QString addData(const QString &table, const QString &input);
 	QString addMediaData(const QString &name, const QString &extension);
 	QString addMediaCombinedData(const QString &tableName,

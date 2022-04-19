@@ -3,12 +3,13 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QSqlQuery>
-
-DatabaseHelper::DatabaseHelper(const QString &databaseName, QObject *parent)
+#include <QDir>
+DatabaseHelper::DatabaseHelper(const QString &databasePath, const QString &databaseName, QObject *parent)
 	: dbName(databaseName), QObject {parent}
 {
 	db = QSqlDatabase::addDatabase("QSQLITE");
-	db.setDatabaseName(dbName);
+	QString db_name_path = databasePath + "/" + databaseName;
+	db.setDatabaseName(db_name_path);
 
 	fieldStrings.insert(PATHS, "paths");
 	fieldStrings.insert(LOCATIONS, "locations");
@@ -24,9 +25,10 @@ DatabaseHelper::DatabaseHelper(const QString &databaseName, QObject *parent)
 			QMessageBox::Cancel);
 		return;
 	}
+	createDb();
 }
 
-void DatabaseHelper::createDb(const QString &name)
+void DatabaseHelper::createDb()
 {
 	createMediasDB();
 

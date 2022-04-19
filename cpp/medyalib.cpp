@@ -2,6 +2,7 @@
 #include "./ui_medyalib.h"
 #include <QCompleter>
 #include <QDebug>
+#include <QDir>
 #include <QFileDialog>
 #include <QImageReader>
 MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
