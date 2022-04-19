@@ -23,7 +23,7 @@ private slots:
 
 private:
 	enum MediaProperties {
-		FULL_PATH,
+		FULL_PATH = 15,
 		NAME,
 		SIZE,
 		EXTENSION,
