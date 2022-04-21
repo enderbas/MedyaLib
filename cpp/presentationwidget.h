@@ -5,6 +5,8 @@
 #include <QListWidgetItem>
 #include <QLabel>
 #include <QDir>
+#include <QFuture>
+
 namespace Ui {
 class PresentationWidget;
 }
@@ -34,6 +36,7 @@ private:
 	Ui::PresentationWidget *ui;
 	QLabel *labelImage = nullptr;
 	QListWidget *thumbnailNewImages = nullptr;
+	QFuture<void> futureThr;
 };
 
 #endif // PRESENTATIONWIDGET_H
