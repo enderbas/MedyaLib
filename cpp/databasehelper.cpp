@@ -98,37 +98,18 @@ QString DatabaseHelper::addMediaCombinedData(const QString &tableName,
 											 const QString &combined_id,
 											 const QString &mediaId)
 {
+	if (tableName.isEmpty() || combined_id.isEmpty() || mediaId.isEmpty())
+		return "";
 	QString combColName = tableName.split("_").at(1) + "_id";
-	QString queryText = "INSERT INTO %1 (media_id, %2) VALUES(:media_id, :%2)";
-	queryText = queryText.arg(tableName, combColName);
-	qDebug() << queryText;
+	QString queryText =
+		"INSERT INTO %1 (media_id, %2) SELECT '%3', '%4' WHERE NOT EXISTS "
+		"(SELECT * FROM %1 WHERE (%1.media_id = '%3' and %1.%2 = '%4'))";
+	queryText = queryText.arg(tableName, combColName, mediaId, combined_id);
 	QSqlQuery query;
 	query.prepare(queryText);
-	query.bindValue(":media_id", mediaId);
-	query.bindValue(":" + combColName, combined_id);
 	query.exec();
 	printQueryError(query);
 	return getDataFromTable("id", tableName, combColName, combined_id);
-}
-
-bool DatabaseHelper::isExist(const QString &tableName, const QString &input)
-{
-	QString text = "SELECT %1 FROM %2 WHERE %1 = (:x)";
-	QString colName = createColumnNameFromTableName(tableName);
-	text = text.arg(colName, tableName);
-
-	QSqlQuery query;
-	query.prepare(text);
-	query.bindValue(":x", input);
-
-	if (query.exec()) {
-		if (query.next()) {
-			qDebug() << input << " exists in " << tableName;
-			qDebug() << getDataFromTable("id", "persons", "person", "Engin");
-			return true;
-		}
-	}
-	return false;
 }
 
 QString DatabaseHelper::getDataFromTable(const QString &select,
