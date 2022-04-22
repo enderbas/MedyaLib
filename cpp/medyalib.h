@@ -29,6 +29,8 @@ private slots:
 	void on_actionNew_Media_triggered();
 	void on_actionGallery_triggered();
 	void on_toolSaveInfos_clicked();
+	void on_checkShowFilters_stateChanged(int arg1);
+	void on_toolSearch_clicked();
 
 private:
 	Ui::MedyaLib *ui;

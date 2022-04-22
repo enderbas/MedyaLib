@@ -19,7 +19,9 @@ public:
 	explicit PresentationWidget(QWidget *parent = nullptr);
 	~PresentationWidget();
 	void showListedItems(const QStringList &list, const QDir &workPath);
-
+	
+	const QString &getPath() const;
+	
 private slots:
 	void draw(QListWidgetItem *item);
 
@@ -33,6 +35,7 @@ private:
 		MODIFIED,
 		ACCESSED
 	};
+	QString path;
 	Ui::PresentationWidget *ui;
 	QLabel *labelImage = nullptr;
 	QListWidget *thumbnailNewImages = nullptr;

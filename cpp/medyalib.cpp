@@ -11,6 +11,7 @@ MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 	ui->layoutSplitter->addWidget(presentation);
 
 	dbHelper = new DatabaseHelper(QDir::currentPath(), "medyalib.db");
+	dbHelper->createDb();
 	setCompleters();
 }
 
@@ -27,6 +28,7 @@ void MedyaLib::on_actionNew_Media_triggered()
 	fileDialog.setOptions(QFileDialog::ShowDirsOnly |
 						  QFileDialog::DontResolveSymlinks);
 	QDir directory(fileDialog.getExistingDirectory());
+	currentWorkPath = directory.path();
 	QStringList medias = directory.entryList(QStringList() << "*.jpg"
 														   << "*.JPG"
 														   << "*.png"
@@ -46,6 +48,10 @@ void MedyaLib::setCompleters()
 	addCompleter(ui->lineEditTimes, "dates");
 	addCompleter(ui->lineEditTags, "tags");
 	addCompleter(ui->lineEditLocat, "locations");
+	addCompleter(ui->lineDetailedWho, "persons");
+	addCompleter(ui->lineDetailedTimes, "dates");
+	addCompleter(ui->lineDetailedTags, "tags");
+	addCompleter(ui->lineDetailedLocation, "locations");
 }
 
 void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
@@ -64,12 +70,13 @@ void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
 void MedyaLib::on_toolSaveInfos_clicked()
 {
 	auto strMap = dbHelper->getFieldStrings();
-
-	QString mediaId;
-	if (currentMediaInformation.name.size())
-		mediaId = dbHelper->addMediaData(currentMediaInformation.name,
-										 currentMediaInformation.ext);
+	QString path = presentation->getPath();
+	QString name = path.split('/').last();
+	QString ext = name.split('.').last();
 	QString id = "";
+	QString mediaId;
+
+	mediaId = dbHelper->addMediaData(name, ext);
 	if (ui->lineEditWho->text().size()) {
 		id = dbHelper->addData(strMap.find(DatabaseHelper::PERSONS).value(),
 							   ui->lineEditWho->text());
@@ -92,9 +99,21 @@ void MedyaLib::on_toolSaveInfos_clicked()
 		addCompleter(ui->lineEditLocat,
 					 strMap.find(DatabaseHelper::LOCATIONS).value());
 	}
-	if (currentMediaInformation.path.size()) {
+	if (!currentWorkPath.isEmpty()) {
 		id = dbHelper->addData(strMap.find(DatabaseHelper::PATHS).value(),
-							   currentMediaInformation.path);
+							   currentWorkPath);
 		dbHelper->addMediaCombinedData("media_paths", id, mediaId);
 	}
+}
+
+void MedyaLib::on_checkShowFilters_stateChanged(int arg1)
+{
+	if (!arg1)
+		ui->widgetDetailedSearch->setVisible(false);
+	else
+		ui->widgetDetailedSearch->setVisible(true);
+}
+
+void MedyaLib::on_toolSearch_clicked()
+{
 }

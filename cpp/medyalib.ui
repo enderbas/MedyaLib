@@ -25,16 +25,9 @@
         <item>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="1" column="2">
-           <widget class="QLineEdit" name="lineEdit"/>
+           <widget class="QLineEdit" name="lineSearch"/>
           </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Search</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
+          <item row="1" column="4">
            <spacer name="horizontalSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -46,6 +39,66 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="2" column="0" colspan="5">
+           <widget class="QWidget" name="widgetDetailedSearch" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <layout class="QHBoxLayout" name="layoutDetailedSearch">
+               <property name="spacing">
+                <number>15</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string>Tags</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineDetailedTags"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Location</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineDetailedLocation"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>Who</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineDetailedWho"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Times</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineDetailedTimes"/>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkExactMatch">
+                 <property name="text">
+                  <string>Exact Match</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
           </item>
           <item row="1" column="0">
            <spacer name="horizontalSpacer_2">
@@ -59,6 +112,27 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="1" column="3">
+           <widget class="QCheckBox" name="checkShowFilters">
+            <property name="text">
+             <string>Show Filters</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5" rowspan="2">
+           <widget class="QToolButton" name="toolSearch">
+            <property name="text">
+             <string>Search</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

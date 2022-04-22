@@ -53,7 +53,7 @@ void PresentationWidget::showListedItems(const QStringList &list,
 
 void PresentationWidget::draw(QListWidgetItem *item)
 {
-	QString path = item->data(MediaProperties::FULL_PATH).toString();
+	path = item->data(MediaProperties::FULL_PATH).toString();
 	QImageReader reader(path);
 	reader.setAutoTransform(true);
 	const QImage newImage = reader.read();
@@ -62,4 +62,9 @@ void PresentationWidget::draw(QListWidgetItem *item)
 	}
 	labelImage->clear();
 	labelImage->setPixmap(QPixmap::fromImage(newImage));
+}
+
+const QString &PresentationWidget::getPath() const
+{
+	return path;
 }
