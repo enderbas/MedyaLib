@@ -25,7 +25,6 @@ DatabaseHelper::DatabaseHelper(const QString &databasePath, const QString &datab
 			QMessageBox::Cancel);
 		return;
 	}
-	createDb();
 }
 
 void DatabaseHelper::createDb()

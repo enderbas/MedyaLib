@@ -11,6 +11,7 @@ MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 	ui->layoutSplitter->addWidget(presentation);
 
 	dbHelper = new DatabaseHelper(QDir::currentPath(), "medyalib.db");
+	dbHelper->createDb();
 	setCompleters();
 }
 
@@ -27,6 +28,7 @@ void MedyaLib::on_actionNew_Media_triggered()
 	fileDialog.setOptions(QFileDialog::ShowDirsOnly |
 						  QFileDialog::DontResolveSymlinks);
 	QDir directory(fileDialog.getExistingDirectory());
+	currentWorkPath = directory.path();
 	QStringList medias = directory.entryList(QStringList() << "*.jpg"
 														   << "*.JPG"
 														   << "*.png"
@@ -64,12 +66,13 @@ void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
 void MedyaLib::on_toolSaveInfos_clicked()
 {
 	auto strMap = dbHelper->getFieldStrings();
-
-	QString mediaId;
-	if (currentMediaInformation.name.size())
-		mediaId = dbHelper->addMediaData(currentMediaInformation.name,
-										 currentMediaInformation.ext);
+	QString path = presentation->getPath();
+	QString name = path.split('/').last();
+	QString ext = name.split('.').last();
 	QString id = "";
+	QString mediaId;
+
+	mediaId = dbHelper->addMediaData(name, ext);
 	if (ui->lineEditWho->text().size()) {
 		id = dbHelper->addData(strMap.find(DatabaseHelper::PERSONS).value(),
 							   ui->lineEditWho->text());
