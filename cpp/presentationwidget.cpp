@@ -3,6 +3,8 @@
 #include <QHBoxLayout>
 #include <QImageReader>
 #include <QSplitter>
+#include <QtConcurrent>
+
 PresentationWidget::PresentationWidget(QWidget *parent)
 	: QWidget(parent), ui(new Ui::PresentationWidget)
 {
@@ -37,12 +39,16 @@ PresentationWidget::~PresentationWidget()
 void PresentationWidget::showListedItems(const QStringList &list,
 										 const QDir &workPath)
 {
-	for (const auto &val : qAsConst(list)) {
-		QString path = workPath.absoluteFilePath(val);
-		QListWidgetItem *item = new QListWidgetItem(QIcon(path), val);
-		item->setData(MediaProperties::FULL_PATH, path);
-		thumbnailNewImages->addItem(item);
-	}
+	auto listItems = [=]() {
+		for (const auto &val : qAsConst(list)) {
+			QString path = workPath.absoluteFilePath(val);
+			QListWidgetItem *item = new QListWidgetItem(QIcon(path), val);
+			item->setData(MediaProperties::FULL_PATH, path);
+			thumbnailNewImages->addItem(item);
+		}
+	};
+	futureThr.waitForFinished();
+	futureThr = QtConcurrent::run(listItems);
 }
 
 void PresentationWidget::draw(QListWidgetItem *item)
