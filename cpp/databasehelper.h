@@ -25,7 +25,6 @@ public:
 	QString addMediaCombinedData(const QString &tableName,
 								 const QString &combined_id,
 								 const QString &mediaId);
-	bool isExist(const QString &tableName, const QString &input);
 	QString getDataFromTable(const QString &select, const QString &from,
 							 const QString &where, const QString &variable);
 

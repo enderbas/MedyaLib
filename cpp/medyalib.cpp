@@ -48,6 +48,10 @@ void MedyaLib::setCompleters()
 	addCompleter(ui->lineEditTimes, "dates");
 	addCompleter(ui->lineEditTags, "tags");
 	addCompleter(ui->lineEditLocat, "locations");
+	addCompleter(ui->lineDetailedWho, "persons");
+	addCompleter(ui->lineDetailedTimes, "dates");
+	addCompleter(ui->lineDetailedTags, "tags");
+	addCompleter(ui->lineDetailedLocation, "locations");
 }
 
 void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
@@ -95,9 +99,21 @@ void MedyaLib::on_toolSaveInfos_clicked()
 		addCompleter(ui->lineEditLocat,
 					 strMap.find(DatabaseHelper::LOCATIONS).value());
 	}
-	if (currentMediaInformation.path.size()) {
+	if (!currentWorkPath.isEmpty()) {
 		id = dbHelper->addData(strMap.find(DatabaseHelper::PATHS).value(),
-							   currentMediaInformation.path);
+							   currentWorkPath);
 		dbHelper->addMediaCombinedData("media_paths", id, mediaId);
 	}
+}
+
+void MedyaLib::on_checkShowFilters_stateChanged(int arg1)
+{
+	if (!arg1)
+		ui->widgetDetailedSearch->setVisible(false);
+	else
+		ui->widgetDetailedSearch->setVisible(true);
+}
+
+void MedyaLib::on_toolSearch_clicked()
+{
 }
