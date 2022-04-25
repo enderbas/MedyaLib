@@ -1,0 +1,28 @@
+DROP TABLE IF EXISTS tt1;
+CREATE TEMP TABLE tt1 AS
+SELECT media_persons.media_id, media_persons.persons_id, persons.person FROM medias
+INNER JOIN media_persons
+on medias.id = media_persons.media_id
+INNER JOIN persons
+on persons.id = media_persons.persons_id;
+
+DROP TABLE IF EXISTS pers1;
+CREATE TEMP TABLE pers1 AS
+SELECT * FROM tt1
+WHERE tt1.persons_id = '1';
+
+DROP TABLE IF EXISTS pers2;
+CREATE TEMP TABLE pers2 AS
+SELECT * FROM tt1
+WHERE tt1.persons_id = '2';
+
+DROP TABLE IF EXISTS pers3;
+CREATE TEMP TABLE pers3 AS
+SELECT * FROM tt1
+WHERE tt1.persons_id = '3';
+
+SELECT * FROM pers1
+INNER JOIN pers2
+on pers1.media_id = pers2.media_id
+INNER JOIN pers3
+on pers1.media_id = pers3.media_id;

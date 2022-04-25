@@ -1,10 +1,11 @@
 #include "databasehelper.h"
 #include <QDebug>
+#include <QDir>
 #include <QMessageBox>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QDir>
-DatabaseHelper::DatabaseHelper(const QString &databasePath, const QString &databaseName, QObject *parent)
+DatabaseHelper::DatabaseHelper(const QString &databasePath,
+							   const QString &databaseName, QObject *parent)
 	: dbName(databaseName), QObject {parent}
 {
 	db = QSqlDatabase::addDatabase("QSQLITE");
@@ -169,4 +170,49 @@ QStringList DatabaseHelper::getColumnItems(const QString &tableName)
 		colItems.push_back(query.value(0).toString());
 	}
 	return colItems;
+}
+
+QStringList DatabaseHelper::search(const QMap<QString, QStringList> &queryMap)
+{
+	auto createTempTable = [](QString &query, const QString &tempName,
+							  const QString &createdFrom) {
+		QString tempTable =
+			"DROP TABLE IF EXISTS %1 CREATE TEMP TABLE %1 AS SELECT * FROM %2";
+		if (query.isEmpty())
+			query = tempTable.arg(tempName, createdFrom);
+		else
+			query.append(tempTable.arg(tempName, createdFrom));
+	};
+	auto createDoubleInnerJoin = [](QString &query, const QString &table) {
+		QString temp = "INNER JOIN media_%1 on medias.id = media_%1.media_id "
+					   "INNER JOIN %1 on %1.id = media_%1.%1_id";
+		query.append(temp.arg(table));
+	};
+	auto createInnerJoin = [](QString &query, const QString &table,
+							  QString createdfrom) {
+		QString temp = "INNER JOIN %1 on $1.media_id = %2.media_id ";
+		query.append(temp.arg(table, createdfrom));
+	};
+	
+	QMapIterator<QString, QStringList> i(queryMap);
+	QString query;
+	createTempTable(query, "tt1", "medias");
+	while (i.hasNext()) {
+		i.next();
+		createDoubleInnerJoin(query, i.key());
+	}
+	int e = 1;
+	while (i.hasNext()) {
+		i.next();
+		createTempTable(query, , );
+	}
+	//	QSqlQuery query;
+	//	query.prepare(queryText);
+	//	query.exec();
+	QStringList response {};
+	//	response.append(query.value(0).toStringList());
+	//	while (query.next()) {
+	//	}
+	//	printQueryError(query);
+	return response;
 }

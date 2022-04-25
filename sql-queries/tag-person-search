@@ -1,0 +1,53 @@
+DROP TABLE IF EXISTS tt1;
+CREATE TEMP TABLE tt1 AS
+SELECT * FROM medias
+--BEGIN INNER JOIN ALL RELATIONAL TABLES
+INNER JOIN media_persons
+on medias.id = media_persons.media_id
+INNER JOIN persons
+on persons.id = media_persons.persons_id
+--
+INNER JOIN media_tags
+on medias.id = media_tags.media_id
+INNER JOIN tags
+on tags.id = media_tags.tags_id;
+--END INNER JOIN ALL RELATIONAL TABLES
+
+--BEGIN CREATE TEMP TABLES
+DROP TABLE IF EXISTS pers1;
+CREATE TEMP TABLE pers1 AS
+SELECT * FROM tt1
+WHERE tt1.persons_id = '1';
+--
+DROP TABLE IF EXISTS pers2;
+CREATE TEMP TABLE pers2 AS
+SELECT * FROM tt1
+WHERE tt1.persons_id = '2';
+--
+DROP TABLE IF EXISTS pers3;
+CREATE TEMP TABLE pers3 AS
+SELECT * FROM tt1
+WHERE tt1.persons_id = '3';
+--
+-- DROP TABLE IF EXISTS tag1;
+-- CREATE TEMP TABLE tag1 AS
+-- SELECT * FROM tt1
+-- WHERE tt1.tags_id = '9';
+--END CREATE TEMP TABLES
+
+--BEGIN FIND MATCHES
+DROP TABLE IF EXISTS res;
+CREATE TEMP TABLE res AS
+SELECT * FROM pers1
+INNER JOIN pers2
+on pers1.media_id = pers2.media_id
+--
+INNER JOIN pers3
+on pers1.media_id = pers3.media_id;
+--
+-- INNER JOIN tag1
+-- on pers1.media_id = tag1.media_id;
+--END FIND MATCHES
+
+SELECT res.name FROM res
+GROUP BY res.name

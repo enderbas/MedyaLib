@@ -13,6 +13,13 @@ MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 	dbHelper = new DatabaseHelper(QDir::currentPath(), "medyalib.db");
 	dbHelper->createDb();
 	setCompleters();
+	QMap<QString, QStringList> searchQuery;
+	QStringList list;
+	searchQuery["tags"] = list;
+	searchQuery["persons"] = list;
+	searchQuery["locations"] = list;
+	dbHelper->search(searchQuery);
+	return;
 }
 
 MedyaLib::~MedyaLib()

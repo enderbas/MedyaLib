@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QString>
-
+#include <QMap>
 class DatabaseHelper : public QObject
 {
 	Q_OBJECT
@@ -30,7 +30,9 @@ public:
 
 	const QHash<FIELDS, QString> &getFieldStrings() const;
 	QStringList getColumnItems(const QString &tableName);
+	QStringList search(const QMap<QString, QStringList> &queryMap);
 
+	QMap<QString, QStringList> searchQuery; // Table column name, Search texts
 private:
 	void createMediasDB();
 	void printQueryError(const QSqlQuery &query);
