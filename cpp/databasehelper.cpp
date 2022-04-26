@@ -170,3 +170,85 @@ QStringList DatabaseHelper::getColumnItems(const QString &tableName)
 	}
 	return colItems;
 }
+
+QStringList DatabaseHelper::search(const QMap<QString, QStringList> &queryMap)
+{
+	auto createTempTable = [](QString &query, const QString &tempName,
+							  const QString &createdFrom) {
+		QString tempTable = "DROP TABLE IF EXISTS %1; CREATE TEMP TABLE %1 AS "
+							"SELECT * FROM %2 ";
+		if (query.isEmpty())
+			query = tempTable.arg(tempName, createdFrom);
+		else
+			query.append(tempTable.arg(tempName, createdFrom));
+	};
+	auto createDoubleInnerJoin = [](QString &query, const QString &table) {
+		QString temp = "INNER JOIN media_%1 on medias.id = media_%1.media_id "
+					   "INNER JOIN %1 on %1.id = media_%1.%1_id ";
+		query.append(temp.arg(table));
+	};
+	auto createInnerJoin = [](QString &query, const QString &table,
+							  QString createdfrom) {
+		QString temp = "INNER JOIN %1 on %2.media_id = %1.media_id ";
+		query.append(temp.arg(table, createdfrom));
+	};
+
+	QMapIterator<QString, QStringList> i(queryMap);
+	QString query;
+	createTempTable(query, "tt1", "medias");
+	while (i.hasNext()) {
+		i.next();
+		if (!i.value().size())
+			continue;
+		createDoubleInnerJoin(query, i.key());
+	}
+	query.append(";");
+	int e = 100;
+	QMapIterator<QString, QStringList> j(queryMap);
+	while (j.hasNext()) {
+		j.next();
+		if (!j.value().size())
+			continue;
+		for (const auto &text : j.value()) {
+			QString ttname = "tt" + QString::number(e);
+			createTempTable(query, ttname, "tt1");
+			QString whereQuery = "WHERE tt1.%1 = '%2' ;";
+			whereQuery =
+				whereQuery.arg(createColumnNameFromTableName(j.key()), text);
+			query.append(whereQuery);
+			e++;
+		}
+	}
+	e = 101;
+	QMapIterator<QString, QStringList> k(queryMap);
+	createTempTable(query, "tt2", "tt100");
+	while (k.hasNext()) {
+		k.next();
+		QString ttname = "tt" + QString::number(e);
+		createInnerJoin(query, ttname, "tt100");
+		e++;
+	}
+	query.append(";");
+	QString selectGroup = "SELECT %1.name FROM %1 GROUP BY %1.name;";
+	query.append(selectGroup.arg("tt2"));
+	QSqlQuery sqlquery;
+	QStringList commaSeperated = query.split(";");
+	for (const auto &c : qAsConst(commaSeperated)) {
+		if (c.isEmpty())
+			continue;
+		if (!sqlquery.exec(c)) {
+			qDebug()
+				<< QString(
+					   "One of the query failed to execute. Error detail: " +
+					   sqlquery.lastError().text())
+					   .toLocal8Bit();
+		}
+	}
+	QStringList response;
+	while (sqlquery.next()) {
+		response << sqlquery.value(0).toString();
+	}
+	sqlquery.finish();
+	printQueryError(sqlquery);
+	return response;
+}
