@@ -22,6 +22,8 @@ PresentationWidget::PresentationWidget(QWidget *parent)
 	QSplitter *splitter = new QSplitter(Qt::Horizontal);
 	splitter->addWidget(thumbnailNewImages);
 	splitter->addWidget(labelImage);
+	splitter->setSizes(
+		{splitter->size().width() * 2 / 3, splitter->size().width() / 3});
 	QHBoxLayout *lay = new QHBoxLayout(this);
 	lay->addWidget(splitter);
 
