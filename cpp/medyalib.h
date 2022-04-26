@@ -5,6 +5,7 @@
 #include <QListWidgetItem>
 #include <QMainWindow>
 #include <presentationwidget.h>
+#include <badgetree.h>
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
@@ -37,9 +38,10 @@ private:
 	QString currentWorkPath;
 	DatabaseHelper *dbHelper = nullptr;
 	PresentationWidget *presentation = nullptr;
-
+	BadgeTree *tree = nullptr;
 private:
 	void setCompleters();
 	void addCompleter(QLineEdit *le, const QString &colName);
+	void initBadgeTree();
 };
 #endif // MEDYALIB_H

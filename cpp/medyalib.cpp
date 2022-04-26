@@ -13,6 +13,9 @@ MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 	dbHelper = new DatabaseHelper(QDir::currentPath(), "medyalib.db");
 	dbHelper->createDb();
 	setCompleters();
+	tree = new BadgeTree(this);
+	ui->layoutTree->addWidget(tree);
+	initBadgeTree();
 }
 
 MedyaLib::~MedyaLib()
@@ -65,6 +68,17 @@ void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	completer->setCompletionMode(QCompleter::PopupCompletion);
 	le->setCompleter(completer);
+}
+
+void MedyaLib::initBadgeTree()
+{
+	auto strMap = dbHelper->getFieldStrings();
+	for(const auto &field : strMap) {
+		tree->addItem(field);
+		auto list = dbHelper->getColumnItems(field);
+		if(list.size())
+			tree->addSubItems(field, list);
+	}
 }
 
 void MedyaLib::on_toolSaveInfos_clicked()
