@@ -74,6 +74,8 @@ void MedyaLib::initBadgeTree()
 {
 	auto strMap = dbHelper->getFieldStrings();
 	for(const auto &field : strMap) {
+		if (field == "paths")
+			continue;
 		tree->addItem(field);
 		auto list = dbHelper->getColumnItems(field);
 		if(list.size())
