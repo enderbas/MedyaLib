@@ -18,6 +18,7 @@ MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 	tree = new BadgeTree(this);
 	ui->layoutTree->addWidget(tree);
 	initBadgeTree();
+	ui->checkExactMatch->setVisible(false);
 }
 
 MedyaLib::~MedyaLib()
@@ -75,12 +76,12 @@ void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
 void MedyaLib::initBadgeTree()
 {
 	auto strMap = dbHelper->getFieldStrings();
-	for(const auto &field : strMap) {
+	for (const auto &field : strMap) {
 		if (field == "paths")
 			continue;
 		tree->addItem(field);
 		auto list = dbHelper->getColumnItems(field);
-		if(list.size())
+		if (list.size())
 			tree->addSubItems(field, list);
 	}
 }
@@ -136,6 +137,25 @@ void MedyaLib::on_toolSaveInfos_clicked()
 
 void MedyaLib::on_toolSearch_clicked()
 {
+	QMap<QString, QStringList> queryMap;
+	if (!ui->lineDetailedWho->text().isEmpty()) {
+		auto l = ui->lineDetailedWho->text().split(";");
+		queryMap.insert("persons",l);
+	}
+	if (!ui->lineDetailedLocation->text().isEmpty()) {
+		auto l = ui->lineDetailedLocation->text().split(";");
+		queryMap.insert("locations",l);
+	}
+	if (!ui->lineDetailedTags->text().isEmpty()) {
+		auto l = ui->lineDetailedTags->text().split(";");
+		queryMap.insert("tags",l);
+	}
+	if (!ui->lineDetailedTimes->text().isEmpty()) {
+		auto l = ui->lineDetailedTimes->text().split(";");
+		queryMap.insert("dates",l);
+	}
+	auto resp = dbHelper->search(queryMap);
+	qDebug()<<resp;
 }
 
 void MedyaLib::on_pushApplyFilters_clicked()
