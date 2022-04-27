@@ -7,8 +7,10 @@
 MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 {
 	ui->setupUi(this);
-	presentation = new PresentationWidget(this);
-	ui->layoutSplitter->addWidget(presentation);
+	searchPres = new PresentationWidget(this);
+	ui->layoutSplitter->addWidget(searchPres);
+	galleryPres = new PresentationWidget(this);
+	ui->layoutPresentation->addWidget(galleryPres);
 
 	dbHelper = new DatabaseHelper(QDir::currentPath(), "medyalib.db");
 	dbHelper->createDb();
@@ -37,7 +39,7 @@ void MedyaLib::on_actionNew_Media_triggered()
 														   << "*.png"
 														   << "*.PNG",
 											 QDir::Files);
-	presentation->showListedItems(medias, directory);
+	searchPres->showListedItems(medias, directory);
 }
 
 void MedyaLib::on_actionGallery_triggered()
@@ -86,7 +88,7 @@ void MedyaLib::initBadgeTree()
 void MedyaLib::on_toolSaveInfos_clicked()
 {
 	auto strMap = dbHelper->getFieldStrings();
-	QString path = presentation->getPath();
+	QString path = searchPres->getPath();
 	QString name = path.split('/').last();
 	QString ext = name.split('.').last();
 	QString id = "";
@@ -120,14 +122,6 @@ void MedyaLib::on_toolSaveInfos_clicked()
 							   currentWorkPath);
 		dbHelper->addMediaCombinedData("media_paths", id, mediaId);
 	}
-}
-
-void MedyaLib::on_checkShowFilters_stateChanged(int arg1)
-{
-	if (!arg1)
-		ui->widgetDetailedSearch->setVisible(false);
-	else
-		ui->widgetDetailedSearch->setVisible(true);
 }
 
 void MedyaLib::on_toolSearch_clicked()
