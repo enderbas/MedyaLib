@@ -85,6 +85,16 @@ void MedyaLib::initBadgeTree()
 	}
 }
 
+void MedyaLib::addToSearchBars(QLineEdit *line, const QStringList &badges)
+{
+	QString text = "";
+	for (const auto &badge : badges) {
+		text.append(badge + ";");
+	}
+	text.remove(text.size() - 1, 1);
+	line->setText(text);
+}
+
 void MedyaLib::on_toolSaveInfos_clicked()
 {
 	auto strMap = dbHelper->getFieldStrings();
@@ -126,4 +136,12 @@ void MedyaLib::on_toolSaveInfos_clicked()
 
 void MedyaLib::on_toolSearch_clicked()
 {
+}
+
+void MedyaLib::on_pushApplyFilters_clicked()
+{
+	addToSearchBars(ui->lineDetailedTags, tree->getSelectedBadges(BadgeTree::TAGS));
+	addToSearchBars(ui->lineDetailedLocation, tree->getSelectedBadges(BadgeTree::LOCATIONS));
+	addToSearchBars(ui->lineDetailedWho, tree->getSelectedBadges(BadgeTree::PERSONS));
+	addToSearchBars(ui->lineDetailedTimes, tree->getSelectedBadges(BadgeTree::TIMES));
 }

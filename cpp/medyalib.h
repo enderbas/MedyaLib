@@ -27,6 +27,9 @@ public:
 	} currentMediaInformation;
 
 private slots:
+	void on_pushApplyFilters_clicked();
+	
+private slots:
 	void on_actionNew_Media_triggered();
 	void on_actionGallery_triggered();
 	void on_toolSaveInfos_clicked();
@@ -43,5 +46,6 @@ private:
 	void setCompleters();
 	void addCompleter(QLineEdit *le, const QString &colName);
 	void initBadgeTree();
+	void addToSearchBars(QLineEdit *line, const QStringList &badges);
 };
 #endif // MEDYALIB_H

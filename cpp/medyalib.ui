@@ -42,30 +42,6 @@
           <item row="0" column="0">
            <widget class="QWidget" name="widgetDetailedSearch" native="true">
             <layout class="QGridLayout" name="gridLayout_3">
-             <item row="0" column="3">
-              <widget class="QLabel" name="labelSrchLoc">
-               <property name="text">
-                <string>Location</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="5">
-              <widget class="QLabel" name="labelSrchWho">
-               <property name="text">
-                <string>Who</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="10">
-              <widget class="QToolButton" name="toolSearch">
-               <property name="text">
-                <string>Search</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="8">
-              <widget class="QLineEdit" name="lineDetailedTimes"/>
-             </item>
              <item row="0" column="9">
               <widget class="QCheckBox" name="checkExactMatch">
                <property name="text">
@@ -73,21 +49,21 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="2">
-              <widget class="QLineEdit" name="lineDetailedTags"/>
+             <item row="0" column="3">
+              <widget class="QLabel" name="labelSrchLoc">
+               <property name="text">
+                <string>Location</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" rowspan="2" colspan="11">
+              <layout class="QHBoxLayout" name="layoutPresentation"/>
+             </item>
+             <item row="0" column="8">
+              <widget class="QLineEdit" name="lineDetailedTimes"/>
              </item>
              <item row="0" column="4">
               <widget class="QLineEdit" name="lineDetailedLocation"/>
-             </item>
-             <item row="0" column="6">
-              <widget class="QLineEdit" name="lineDetailedWho"/>
-             </item>
-             <item row="0" column="7">
-              <widget class="QLabel" name="labelSrchTime">
-               <property name="text">
-                <string>Times</string>
-               </property>
-              </widget>
              </item>
              <item row="0" column="1">
               <widget class="QLabel" name="labelSrchTags">
@@ -96,8 +72,15 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="1" rowspan="2" colspan="10">
-              <layout class="QHBoxLayout" name="layoutPresentation"/>
+             <item row="0" column="2">
+              <widget class="QLineEdit" name="lineDetailedTags"/>
+             </item>
+             <item row="0" column="7">
+              <widget class="QLabel" name="labelSrchTime">
+               <property name="text">
+                <string>Times</string>
+               </property>
+              </widget>
              </item>
              <item row="0" column="0" rowspan="3">
               <layout class="QVBoxLayout" name="layoutTree">
@@ -105,6 +88,30 @@
                 <number>0</number>
                </property>
               </layout>
+             </item>
+             <item row="0" column="6">
+              <widget class="QLineEdit" name="lineDetailedWho"/>
+             </item>
+             <item row="0" column="5">
+              <widget class="QLabel" name="labelSrchWho">
+               <property name="text">
+                <string>Who</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="11">
+              <widget class="QToolButton" name="toolSearch">
+               <property name="text">
+                <string>Search</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="10">
+              <widget class="QPushButton" name="pushApplyFilters">
+               <property name="text">
+                <string>Apply Filters</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
