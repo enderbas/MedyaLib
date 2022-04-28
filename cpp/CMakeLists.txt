@@ -25,6 +25,9 @@ set(PROJECT_SOURCES
         presentationwidget.cpp
         presentationwidget.h
         presentationwidget.ui
+        badgetree.h
+        badgetree.cpp
+        badgetree.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

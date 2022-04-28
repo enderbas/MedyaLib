@@ -30,10 +30,7 @@ public:
 
 	const QHash<FIELDS, QString> &getFieldStrings() const;
 	QStringList getColumnItems(const QString &tableName);
-	QStringList search(const QMap<QString, QStringList> &queryMap);
-
-public:
-	QMap<QString, QStringList> searchQuery; // Table column name, Search texts
+	QStringList search(const QMap<QString, QStringList> &queryMap);// Table column name, Search texts
 
 private:
 	void createMediasDB();

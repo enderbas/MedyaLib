@@ -7,12 +7,18 @@
 MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 {
 	ui->setupUi(this);
-	presentation = new PresentationWidget(this);
-	ui->layoutSplitter->addWidget(presentation);
+	searchPres = new PresentationWidget(this);
+	ui->layoutSplitter->addWidget(searchPres);
+	galleryPres = new PresentationWidget(this);
+	ui->layoutPresentation->addWidget(galleryPres);
 
 	dbHelper = new DatabaseHelper(QDir::currentPath(), "medyalib.db");
 	dbHelper->createDb();
 	setCompleters();
+	tree = new BadgeTree(this);
+	ui->layoutTree->addWidget(tree);
+	initBadgeTree();
+	ui->checkExactMatch->setVisible(false);
 }
 
 MedyaLib::~MedyaLib()
@@ -34,7 +40,7 @@ void MedyaLib::on_actionNew_Media_triggered()
 														   << "*.png"
 														   << "*.PNG",
 											 QDir::Files);
-	presentation->showListedItems(medias, directory);
+	searchPres->showListedItems(medias, directory);
 }
 
 void MedyaLib::on_actionGallery_triggered()
@@ -67,10 +73,33 @@ void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
 	le->setCompleter(completer);
 }
 
+void MedyaLib::initBadgeTree()
+{
+	auto strMap = dbHelper->getFieldStrings();
+	for (const auto &field : strMap) {
+		if (field == "paths")
+			continue;
+		tree->addItem(field);
+		auto list = dbHelper->getColumnItems(field);
+		if (list.size())
+			tree->addSubItems(field, list);
+	}
+}
+
+void MedyaLib::addToSearchBars(QLineEdit *line, const QStringList &badges)
+{
+	QString text = "";
+	for (const auto &badge : badges) {
+		text.append(badge + ";");
+	}
+	text.remove(text.size() - 1, 1);
+	line->setText(text);
+}
+
 void MedyaLib::on_toolSaveInfos_clicked()
 {
 	auto strMap = dbHelper->getFieldStrings();
-	QString path = presentation->getPath();
+	QString path = searchPres->getPath();
 	QString name = path.split('/').last();
 	QString ext = name.split('.').last();
 	QString id = "";
@@ -106,14 +135,33 @@ void MedyaLib::on_toolSaveInfos_clicked()
 	}
 }
 
-void MedyaLib::on_checkShowFilters_stateChanged(int arg1)
-{
-	if (!arg1)
-		ui->widgetDetailedSearch->setVisible(false);
-	else
-		ui->widgetDetailedSearch->setVisible(true);
-}
-
 void MedyaLib::on_toolSearch_clicked()
 {
+	QMap<QString, QStringList> queryMap;
+	if (!ui->lineDetailedWho->text().isEmpty()) {
+		auto l = ui->lineDetailedWho->text().split(";");
+		queryMap.insert("persons",l);
+	}
+	if (!ui->lineDetailedLocation->text().isEmpty()) {
+		auto l = ui->lineDetailedLocation->text().split(";");
+		queryMap.insert("locations",l);
+	}
+	if (!ui->lineDetailedTags->text().isEmpty()) {
+		auto l = ui->lineDetailedTags->text().split(";");
+		queryMap.insert("tags",l);
+	}
+	if (!ui->lineDetailedTimes->text().isEmpty()) {
+		auto l = ui->lineDetailedTimes->text().split(";");
+		queryMap.insert("dates",l);
+	}
+	auto resp = dbHelper->search(queryMap);
+	qDebug()<<resp;
+}
+
+void MedyaLib::on_pushApplyFilters_clicked()
+{
+	addToSearchBars(ui->lineDetailedTags, tree->getSelectedBadges(BadgeTree::TAGS));
+	addToSearchBars(ui->lineDetailedLocation, tree->getSelectedBadges(BadgeTree::LOCATIONS));
+	addToSearchBars(ui->lineDetailedWho, tree->getSelectedBadges(BadgeTree::PERSONS));
+	addToSearchBars(ui->lineDetailedTimes, tree->getSelectedBadges(BadgeTree::TIMES));
 }

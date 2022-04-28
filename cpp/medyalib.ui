@@ -15,143 +15,108 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
        <number>0</number>
       </property>
       <widget class="QWidget" name="page">
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,10">
-        <item>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="lineSearch"/>
-          </item>
-          <item row="1" column="4">
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="0" colspan="5">
+       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0">
+        <item row="0" column="2" rowspan="2">
+         <layout class="QGridLayout" name="layoutSearch">
+          <item row="0" column="0">
            <widget class="QWidget" name="widgetDetailedSearch" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <layout class="QHBoxLayout" name="layoutDetailedSearch">
-               <property name="spacing">
-                <number>15</number>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="0" column="9">
+              <widget class="QCheckBox" name="checkExactMatch">
+               <property name="text">
+                <string>Exact Match</string>
                </property>
-               <item>
-                <widget class="QLabel" name="label_6">
-                 <property name="text">
-                  <string>Tags</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineDetailedTags"/>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_7">
-                 <property name="text">
-                  <string>Location</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineDetailedLocation"/>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_8">
-                 <property name="text">
-                  <string>Who</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineDetailedWho"/>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_9">
-                 <property name="text">
-                  <string>Times</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineDetailedTimes"/>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkExactMatch">
-                 <property name="text">
-                  <string>Exact Match</string>
-                 </property>
-                </widget>
-               </item>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QLabel" name="labelSrchLoc">
+               <property name="text">
+                <string>Location</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" rowspan="2" colspan="11">
+              <layout class="QHBoxLayout" name="layoutPresentation"/>
+             </item>
+             <item row="0" column="8">
+              <widget class="QLineEdit" name="lineDetailedTimes"/>
+             </item>
+             <item row="0" column="4">
+              <widget class="QLineEdit" name="lineDetailedLocation"/>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="labelSrchTags">
+               <property name="text">
+                <string>Tags</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLineEdit" name="lineDetailedTags"/>
+             </item>
+             <item row="0" column="7">
+              <widget class="QLabel" name="labelSrchTime">
+               <property name="text">
+                <string>Times</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" rowspan="3">
+              <layout class="QVBoxLayout" name="layoutTree">
+               <property name="spacing">
+                <number>0</number>
+               </property>
               </layout>
+             </item>
+             <item row="0" column="6">
+              <widget class="QLineEdit" name="lineDetailedWho"/>
+             </item>
+             <item row="0" column="5">
+              <widget class="QLabel" name="labelSrchWho">
+               <property name="text">
+                <string>Who</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="11">
+              <widget class="QToolButton" name="toolSearch">
+               <property name="text">
+                <string>Search</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="10">
+              <widget class="QPushButton" name="pushApplyFilters">
+               <property name="text">
+                <string>Apply Filters</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
           </item>
-          <item row="1" column="0">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="1" column="3">
-           <widget class="QCheckBox" name="checkShowFilters">
-            <property name="text">
-             <string>Show Filters</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Search</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5" rowspan="2">
-           <widget class="QToolButton" name="toolSearch">
-            <property name="text">
-             <string>Search</string>
-            </property>
-           </widget>
-          </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QScrollArea" name="scrollArea">
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>1154</width>
-             <height>498</height>
-            </rect>
-           </property>
-          </widget>
-         </widget>
         </item>
        </layout>
       </widget>
