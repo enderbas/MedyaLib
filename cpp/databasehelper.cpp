@@ -193,6 +193,11 @@ QStringList DatabaseHelper::search(const QMap<QString, QStringList> &queryMap)
 		query.append(temp.arg(table, createdfrom));
 	};
 
+	bool singleSearch = false;
+	for (const auto &badge : queryMap) {
+		if ((queryMap.size() == 1) && (badge.size() == 1))
+			singleSearch = true;
+	}
 	QMapIterator<QString, QStringList> i(queryMap);
 	QString query;
 	createTempTable(query, "tt1", "medias");
@@ -202,6 +207,7 @@ QStringList DatabaseHelper::search(const QMap<QString, QStringList> &queryMap)
 			continue;
 		createDoubleInnerJoin(query, i.key());
 	}
+	createDoubleInnerJoin(query, "paths");
 	query.append(";");
 	int e = 100;
 	QMapIterator<QString, QStringList> j(queryMap);
@@ -219,18 +225,24 @@ QStringList DatabaseHelper::search(const QMap<QString, QStringList> &queryMap)
 			e++;
 		}
 	}
-	e = 101;
 	QMapIterator<QString, QStringList> k(queryMap);
-	createTempTable(query, "tt2", "tt100");
-	while (k.hasNext()) {
-		k.next();
-		QString ttname = "tt" + QString::number(e);
-		createInnerJoin(query, ttname, "tt100");
-		e++;
+	e = 100;
+	if (!singleSearch) {
+		e = 101;
+		createTempTable(query, "tt2", "tt100");
+		while (k.hasNext()) {
+			k.next();
+			QString ttname = "tt" + QString::number(e);
+			createInnerJoin(query, ttname, "tt100");
+			e++;
+		}
 	}
 	query.append(";");
-	QString selectGroup = "SELECT %1.name FROM %1 GROUP BY %1.name;";
-	query.append(selectGroup.arg("tt2"));
+	QString selectGroup = "SELECT %1.name, %1.path FROM %1 GROUP BY %1.name;";
+	if (!singleSearch)
+		query.append(selectGroup.arg("tt2"));
+	else
+		query.append(selectGroup.arg("tt100"));
 	QSqlQuery sqlquery;
 	QStringList commaSeperated = query.split(";");
 	for (const auto &c : qAsConst(commaSeperated)) {
@@ -246,7 +258,8 @@ QStringList DatabaseHelper::search(const QMap<QString, QStringList> &queryMap)
 	}
 	QStringList response;
 	while (sqlquery.next()) {
-		response << sqlquery.value(0).toString();
+		response << sqlquery.value(1).toString() + "/" +
+						sqlquery.value(0).toString();
 	}
 	sqlquery.finish();
 	printQueryError(sqlquery);
