@@ -19,6 +19,7 @@ public:
 	explicit PresentationWidget(QWidget *parent = nullptr);
 	~PresentationWidget();
 	void showListedItems(const QStringList &list, const QDir &workPath);
+	void showListedItems(const QStringList &list);
 	
 	const QString &getPath() const;
 	
