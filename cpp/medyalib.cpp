@@ -155,7 +155,7 @@ void MedyaLib::on_toolSearch_clicked()
 		queryMap.insert("dates",l);
 	}
 	auto resp = dbHelper->search(queryMap);
-	qDebug()<<resp;
+	galleryPres->showListedItems(resp);
 }
 
 void MedyaLib::on_pushApplyFilters_clicked()

@@ -49,6 +49,21 @@ void PresentationWidget::showListedItems(const QStringList &list,
 			thumbnailNewImages->addItem(item);
 		}
 	};
+	thumbnailNewImages->clear();
+	futureThr.waitForFinished();
+	futureThr = QtConcurrent::run(listItems);
+}
+
+void PresentationWidget::showListedItems(const QStringList &list)
+{
+	auto listItems = [=]() {
+		for (const auto &val : qAsConst(list)) {
+			QListWidgetItem *item = new QListWidgetItem(QIcon(val), "");
+			item->setData(MediaProperties::FULL_PATH, val);
+			thumbnailNewImages->addItem(item);
+		}
+	};
+	thumbnailNewImages->clear();
 	futureThr.waitForFinished();
 	futureThr = QtConcurrent::run(listItems);
 }
