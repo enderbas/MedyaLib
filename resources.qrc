@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/workspaces_black_24dp.svg</file>
+        <file>icons/search_black_24dp.svg</file>
+    </qresource>
+</RCC>

@@ -7,6 +7,7 @@
 MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 {
 	ui->setupUi(this);
+	ui->toolSearch->setIcon(QIcon(":icons/search_black_24dp.svg"));
 	searchPres = new PresentationWidget(this);
 	ui->layoutSplitter->addWidget(searchPres);
 	galleryPres = new PresentationWidget(this);
