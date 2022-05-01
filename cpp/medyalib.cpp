@@ -47,6 +47,7 @@ void MedyaLib::on_actionNew_Media_triggered()
 void MedyaLib::on_actionGallery_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(0);
+	initBadgeTree();
 }
 
 void MedyaLib::setCompleters()
@@ -76,6 +77,7 @@ void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
 
 void MedyaLib::initBadgeTree()
 {
+	tree->clear();
 	auto strMap = dbHelper->getFieldStrings();
 	for (const auto &field : strMap) {
 		if (field == "paths")

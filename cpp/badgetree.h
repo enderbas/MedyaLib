@@ -21,6 +21,7 @@ public:
 	void addSubItem(const QString &parent, const QString &itemName);
 	void addSubItems(const QString &parent, const QStringList &itemList);
 	QStringList getSelectedBadges(const Badges &badge);
+	void clear();
 
 public slots:
 	void updateSelectedItemList(QTreeWidgetItem *item, int column);
