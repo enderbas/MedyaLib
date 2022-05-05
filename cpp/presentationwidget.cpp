@@ -100,7 +100,7 @@ void PresentationWidget::scaleImage(double factor)
 {
 	scaleFactor *= factor;
 	labelImage->resize(scaleFactor *
-					   labelImage->pixmap(Qt::ReturnByValue).size());
+					   labelImage->pixmap()->size());
 
 	adjustScrollBar(scrollArea->horizontalScrollBar(), factor);
 	adjustScrollBar(scrollArea->verticalScrollBar(), factor);
