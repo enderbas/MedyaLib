@@ -7,6 +7,8 @@
 MedyaLib::MedyaLib(QWidget *parent) : QMainWindow(parent), ui(new Ui::MedyaLib)
 {
 	ui->setupUi(this);
+	createActions();
+	ui->toolSearch->setIcon(QIcon(":icons/search_black_24dp.svg"));
 	searchPres = new PresentationWidget(this);
 	ui->layoutSplitter->addWidget(searchPres);
 	galleryPres = new PresentationWidget(this);
@@ -26,9 +28,9 @@ MedyaLib::~MedyaLib()
 	delete ui;
 }
 
-void MedyaLib::on_actionNew_Media_triggered()
+void MedyaLib::open()
 {
-	ui->stackedWidget->setCurrentIndex(1);
+	ui->stackedWidget->setCurrentIndex(NEWMEDIA);
 	QFileDialog fileDialog(this);
 	fileDialog.setFileMode(QFileDialog::Directory);
 	fileDialog.setOptions(QFileDialog::ShowDirsOnly |
@@ -43,9 +45,10 @@ void MedyaLib::on_actionNew_Media_triggered()
 	searchPres->showListedItems(medias, directory);
 }
 
-void MedyaLib::on_actionGallery_triggered()
+void MedyaLib::gallery()
 {
-	ui->stackedWidget->setCurrentIndex(0);
+	ui->stackedWidget->setCurrentIndex(GALLERY);
+	initBadgeTree();
 }
 
 void MedyaLib::setCompleters()
@@ -75,6 +78,7 @@ void MedyaLib::addCompleter(QLineEdit *le, const QString &colName)
 
 void MedyaLib::initBadgeTree()
 {
+	tree->clear();
 	auto strMap = dbHelper->getFieldStrings();
 	for (const auto &field : strMap) {
 		if (field == "paths")
@@ -94,6 +98,43 @@ void MedyaLib::addToSearchBars(QLineEdit *line, const QStringList &badges)
 	}
 	text.remove(text.size() - 1, 1);
 	line->setText(text);
+}
+
+void MedyaLib::createActions()
+{
+	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+	QAction *openAct =
+		fileMenu->addAction(tr("&Open..."), this, &MedyaLib::open);
+	openAct->setShortcut(QKeySequence::Open);
+
+	QAction *galleryAct =
+		fileMenu->addAction(tr("&Gallery..."), this, &MedyaLib::gallery);
+	galleryAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+
+	QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
+
+	zoomInAct = viewMenu->addAction(tr("Zoom &In (25%)"), this, [this]() {
+		if (ui->stackedWidget->currentIndex() == GALLERY) {
+			if (galleryPres->getScaleFactor() < 3.0)
+				galleryPres->zoomIn();
+		} else if (ui->stackedWidget->currentIndex() == NEWMEDIA) {
+			if (searchPres->getScaleFactor() < 3.0)
+				searchPres->zoomIn();
+		}
+	});
+	zoomInAct->setShortcut(QKeySequence::ZoomIn);
+
+	zoomOutAct = viewMenu->addAction(tr("Zoom &Out (25%)"), this, [this]() {
+		if (ui->stackedWidget->currentIndex() == GALLERY) {
+			if (galleryPres->getScaleFactor() > 0.333)
+				galleryPres->zoomOut();
+		} else if (ui->stackedWidget->currentIndex() == NEWMEDIA) {
+			if (searchPres->getScaleFactor() > 0.333)
+				searchPres->zoomOut();
+		}
+	});
+
+	zoomOutAct->setShortcut(QKeySequence::ZoomOut);
 }
 
 void MedyaLib::on_toolSaveInfos_clicked()

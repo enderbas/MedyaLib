@@ -14,8 +14,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Concurrent REQUIRED)
+set(APP_ICON_RESOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../resources.qrc")
 
 set(PROJECT_SOURCES
+        ${APP_ICON_RESOURCE}
         main.cpp
         medyalib.cpp
         medyalib.h

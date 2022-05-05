@@ -61,6 +61,11 @@ QStringList BadgeTree::getSelectedBadges(const Badges &badge)
 	return {};
 }
 
+void BadgeTree::clear()
+{
+	ui->treeWidget->clear();
+}
+
 void BadgeTree::updateSelectedItemList(QTreeWidgetItem *item, int column)
 {
 	auto parent = item->parent();

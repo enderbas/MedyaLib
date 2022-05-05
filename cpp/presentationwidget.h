@@ -1,11 +1,12 @@
 #ifndef PRESENTATIONWIDGET_H
 #define PRESENTATIONWIDGET_H
 
-#include <QWidget>
-#include <QListWidgetItem>
-#include <QLabel>
+#include "qscrollarea.h"
 #include <QDir>
 #include <QFuture>
+#include <QLabel>
+#include <QListWidgetItem>
+#include <QWidget>
 
 namespace Ui {
 class PresentationWidget;
@@ -20,9 +21,12 @@ public:
 	~PresentationWidget();
 	void showListedItems(const QStringList &list, const QDir &workPath);
 	void showListedItems(const QStringList &list);
-	
 	const QString &getPath() const;
-	
+	void zoomIn();
+	void zoomOut();
+
+	double getScaleFactor() const;
+
 private slots:
 	void draw(QListWidgetItem *item);
 
@@ -41,6 +45,12 @@ private:
 	QLabel *labelImage = nullptr;
 	QListWidget *thumbnailNewImages = nullptr;
 	QFuture<void> futureThr;
+	QScrollArea *scrollArea = nullptr;
+	double scaleFactor = 1;
+
+protected:
+	void scaleImage(double factor);
+	void adjustScrollBar(QScrollBar *scrollBar, double factor);
 };
 
 #endif // PRESENTATIONWIDGET_H
