@@ -1,7 +1,9 @@
 #include "presentationwidget.h"
 #include "ui_presentationwidget.h"
+#include <QAction>
 #include <QHBoxLayout>
 #include <QImageReader>
+#include <QScrollBar>
 #include <QSplitter>
 #include <QtConcurrent>
 
@@ -15,13 +17,18 @@ PresentationWidget::PresentationWidget(QWidget *parent)
 	labelImage->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	labelImage->setScaledContents(true);
 
+	scrollArea = new QScrollArea(this);
+	scrollArea->setBackgroundRole(QPalette::Dark);
+	scrollArea->setWidget(labelImage);
+	scrollArea->setVisible(false);
+
 	thumbnailNewImages->setViewMode(QListWidget::IconMode);
 	thumbnailNewImages->setIconSize(QSize(200, 150));
 	thumbnailNewImages->setResizeMode(QListWidget::Adjust);
 
 	QSplitter *splitter = new QSplitter(Qt::Horizontal);
 	splitter->addWidget(thumbnailNewImages);
-	splitter->addWidget(labelImage);
+	splitter->addWidget(scrollArea);
 	splitter->setSizes(
 		{splitter->size().width() * 2 / 3, splitter->size().width() / 3});
 	QHBoxLayout *lay = new QHBoxLayout(this);
@@ -30,8 +37,6 @@ PresentationWidget::PresentationWidget(QWidget *parent)
 	connect(thumbnailNewImages, SIGNAL(itemClicked(QListWidgetItem*)), this,
 			SLOT(draw(QListWidgetItem*)));
 }
-// https://stackoverflow.com/questions/26829754/how-to-use-the-threads-to-create-the-images-thumbnail
-// TODO: draw images using threads
 
 PresentationWidget::~PresentationWidget()
 {
@@ -77,11 +82,47 @@ void PresentationWidget::draw(QListWidgetItem *item)
 	if (newImage.isNull()) {
 		return;
 	}
+	setWindowFilePath(path);
 	labelImage->clear();
 	labelImage->setPixmap(QPixmap::fromImage(newImage));
+
+	scaleFactor = 1.0;
+	scrollArea->setVisible(true);
+	labelImage->adjustSize();
+}
+
+double PresentationWidget::getScaleFactor() const
+{
+	return scaleFactor;
+}
+
+void PresentationWidget::scaleImage(double factor)
+{
+	scaleFactor *= factor;
+	labelImage->resize(scaleFactor *
+					   labelImage->pixmap(Qt::ReturnByValue).size());
+
+	adjustScrollBar(scrollArea->horizontalScrollBar(), factor);
+	adjustScrollBar(scrollArea->verticalScrollBar(), factor);
+}
+
+void PresentationWidget::adjustScrollBar(QScrollBar *scrollBar, double factor)
+{
+	scrollBar->setValue(int(factor * scrollBar->value() +
+							((factor - 1) * scrollBar->pageStep() / 2)));
 }
 
 const QString &PresentationWidget::getPath() const
 {
 	return path;
+}
+
+void PresentationWidget::zoomIn()
+{
+	scaleImage(1.25);
+}
+
+void PresentationWidget::zoomOut()
+{
+	scaleImage(0.8);
 }

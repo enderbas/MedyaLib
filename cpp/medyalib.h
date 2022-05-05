@@ -17,6 +17,11 @@ class MedyaLib : public QMainWindow
 {
 	Q_OBJECT
 
+	enum Pages {
+		GALLERY = 0,
+		NEWMEDIA = 1
+	};
+
 public:
 	MedyaLib(QWidget *parent = nullptr);
 	~MedyaLib();
@@ -26,14 +31,16 @@ public:
 		QString ext;
 	} currentMediaInformation;
 
+signals:
+	void zoomIn();
+	void zoomOut();
+
 private slots:
-	void on_pushApplyFilters_clicked();
-	
-private slots:
-	void on_actionNew_Media_triggered();
-	void on_actionGallery_triggered();
-	void on_toolSaveInfos_clicked();
+	void open();
+	void gallery();
 	void on_toolSearch_clicked();
+	void on_toolSaveInfos_clicked();
+	void on_pushApplyFilters_clicked();
 
 private:
 	Ui::MedyaLib *ui;
@@ -42,10 +49,14 @@ private:
 	PresentationWidget *searchPres = nullptr;
 	PresentationWidget *galleryPres = nullptr;
 	BadgeTree *tree = nullptr;
+	QAction *zoomInAct;
+	QAction *zoomOutAct;
+
 private:
 	void setCompleters();
 	void addCompleter(QLineEdit *le, const QString &colName);
 	void initBadgeTree();
 	void addToSearchBars(QLineEdit *line, const QStringList &badges);
+	void createActions();
 };
 #endif // MEDYALIB_H
