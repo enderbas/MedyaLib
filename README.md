@@ -10,8 +10,18 @@ Tag based media index program. Save images with location time and person informa
 # Requirements
 - CMake 3.16 or higher
 - Qt5
+
+## Cmake
+```bash
+    sudo apt install cmake
+```
+## Qt 
+```bash
+    sudo apt install build-essential
+    sudo apt install qt5-default
+```
 # Building the project
-A similar CMake routine to the the one below:
+A similar CMake routine to the one below:
 
 ```cmake
 mkdir build/ && cd build/
